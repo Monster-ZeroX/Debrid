@@ -2,7 +2,7 @@
 
 A complete, production-ready self-hosted debrid alternative for Stremio and MediaFusion. This service provides P2P torrent streaming capabilities without requiring any external debrid service, subscription, or API key.
 
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://www.heroku.com/deploy?template=https://github.com/Monster-ZeroX/Debrid)
 
 ## Features
 
