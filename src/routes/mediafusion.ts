@@ -18,16 +18,17 @@ const router = Router();
  *   "fileIndex": 0  // optional, defaults to best video file
  * }
  */
-router.post('/resolve', async (req: Request, res: Response) => {
+router.post('/resolve', async (req: Request, res: Response): Promise<void> => {
   try {
     const body: MediaFusionResolveRequest = req.body;
 
     // Extract torrent identifier
     const torrentId = body.infoHash || body.magnet || body.torrentUrl;
     if (!torrentId) {
-      return res.status(400).json({
+      res.status(400).json({
         error: 'Missing torrent identifier (infoHash, magnet, or torrentUrl required)',
       });
+      return;
     }
 
     // Add the torrent
@@ -80,16 +81,17 @@ router.post('/resolve', async (req: Request, res: Response) => {
  * GET /mediafusion/status/:infoHash
  * Get torrent status for MediaFusion
  */
-router.get('/status/:infoHash', (req: Request, res: Response) => {
+router.get('/status/:infoHash', (req: Request, res: Response): void => {
   try {
     const { infoHash } = req.params;
     const provider = getDebridProvider();
     const status = provider.getTorrentStatus(infoHash);
 
     if (!status) {
-      return res.status(404).json({
+      res.status(404).json({
         error: 'Torrent not found',
       });
+      return;
     }
 
     res.json(status);
@@ -106,7 +108,7 @@ router.get('/status/:infoHash', (req: Request, res: Response) => {
  * GET /mediafusion/health
  * Health check for MediaFusion integration
  */
-router.get('/health', (req: Request, res: Response) => {
+router.get('/health', (_req: Request, res: Response) => {
   const provider = getDebridProvider();
   const activeTorrents = provider.getActiveTorrents();
 
@@ -122,7 +124,7 @@ router.get('/health', (req: Request, res: Response) => {
  * GET /mediafusion/info
  * Provider information for MediaFusion configuration
  */
-router.get('/info', (req: Request, res: Response) => {
+router.get('/info', (_req: Request, res: Response) => {
   res.json({
     name: 'Self-Hosted Debrid',
     type: 'direct-torrent',

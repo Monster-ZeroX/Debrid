@@ -1,7 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { getDebridProvider } from '../services/debridProvider';
 import { StremioManifest, StremioStreamResponse } from '../types';
-import { config } from '../config';
 
 const router = Router();
 
@@ -27,7 +26,7 @@ const manifest: StremioManifest = {
  * GET /stremio/manifest.json
  * Returns the Stremio addon manifest
  */
-router.get('/manifest.json', (req: Request, res: Response) => {
+router.get('/manifest.json', (_req: Request, res: Response) => {
   res.json(manifest);
 });
 
@@ -40,9 +39,9 @@ router.get('/manifest.json', (req: Request, res: Response) => {
  * - infohash:40_char_infohash (torrent infohash)
  * - magnet:base64_encoded_magnet (magnet URI)
  */
-router.get('/stream/:type/:id.json', async (req: Request, res: Response) => {
+router.get('/stream/:type/:id.json', async (req: Request, res: Response): Promise<void> => {
   try {
-    const { type, id } = req.params;
+    const { id } = req.params;
 
     // Parse the ID to extract torrent information
     let infoHash: string | null = null;
@@ -111,7 +110,7 @@ router.get('/stream/:type/:id.json', async (req: Request, res: Response) => {
  * GET /stremio/health
  * Health check endpoint
  */
-router.get('/health', (req: Request, res: Response) => {
+router.get('/health', (_req: Request, res: Response) => {
   const provider = getDebridProvider();
   const activeTorrents = provider.getActiveTorrents();
 

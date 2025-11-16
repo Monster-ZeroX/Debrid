@@ -30,7 +30,7 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
 /**
  * Error handling middleware
  */
-export function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
+export function errorHandler(err: Error, _req: Request, res: Response, _next: NextFunction) {
   console.error('Error:', err);
 
   res.status(500).json({
@@ -42,7 +42,7 @@ export function errorHandler(err: Error, req: Request, res: Response, next: Next
 /**
  * 404 handler
  */
-export function notFoundHandler(req: Request, res: Response) {
+export function notFoundHandler(_req: Request, res: Response) {
   res.status(404).json({
     error: 'Not Found',
     message: 'The requested resource was not found',

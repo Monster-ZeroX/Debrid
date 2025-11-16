@@ -8,20 +8,22 @@ const router = Router();
  * Stream a specific file from a torrent
  * Supports HTTP range requests for seeking
  */
-router.get('/:infoHash/:fileIndex', async (req: Request, res: Response) => {
+router.get('/:infoHash/:fileIndex', async (req: Request, res: Response): Promise<void> => {
   try {
     const { infoHash, fileIndex } = req.params;
     const fileIdx = parseInt(fileIndex, 10);
 
     if (isNaN(fileIdx)) {
-      return res.status(400).send('Invalid file index');
+      res.status(400).send('Invalid file index');
+      return;
     }
 
     const provider = getDebridProvider();
     const torrent = provider.getTorrent(infoHash);
 
     if (!torrent) {
-      return res.status(404).send('Torrent not found');
+      res.status(404).send('Torrent not found');
+      return;
     }
 
     // Wait for torrent to be ready
@@ -30,14 +32,16 @@ router.get('/:infoHash/:fileIndex', async (req: Request, res: Response) => {
       await new Promise(resolve => setTimeout(resolve, 2000));
 
       if (!torrent.ready) {
-        return res.status(503).send('Torrent not ready yet, please retry');
+        res.status(503).send('Torrent not ready yet, please retry');
+        return;
       }
     }
 
     const file = provider.getFileByIndex(torrent, fileIdx);
 
     if (!file) {
-      return res.status(404).send('File not found');
+      res.status(404).send('File not found');
+      return;
     }
 
     // Handle range requests

@@ -1,6 +1,5 @@
 import WebTorrent, { Torrent, TorrentFile as WTFile } from 'webtorrent';
-import parseTorrent from 'parse-torrent';
-import { TorrentInfo, TorrentFile, DebridProviderOptions, TorrentEngineStatus } from '../types';
+import { TorrentInfo, DebridProviderOptions, TorrentEngineStatus } from '../types';
 import { config } from '../config';
 
 /**
@@ -73,7 +72,7 @@ export class DebridProvider {
           resolve(torrentInfo);
         });
 
-        torrent.on('error', (err: Error) => {
+        torrent.once('error', (err: Error) => {
           clearTimeout(timeoutId);
           reject(err);
         });
@@ -180,12 +179,12 @@ export class DebridProvider {
         reject(new Error('Torrent ready timeout'));
       }, timeout);
 
-      torrent.on('ready', () => {
+      torrent.once('ready', () => {
         clearTimeout(timeoutId);
         resolve();
       });
 
-      torrent.on('error', (err: Error) => {
+      torrent.once('error', (err: Error) => {
         clearTimeout(timeoutId);
         reject(err);
       });

@@ -43,7 +43,7 @@ export function createApp(): Application {
   }
 
   // Health check (no auth required)
-  app.get('/health', (req, res) => {
+  app.get('/health', (_req, res) => {
     res.json({
       status: 'ok',
       service: 'self-hosted-debrid',
@@ -53,7 +53,7 @@ export function createApp(): Application {
   });
 
   // Root endpoint - service info
-  app.get('/', (req, res) => {
+  app.get('/', (_req, res) => {
     res.json({
       name: 'Self-Hosted Debrid',
       version: '1.0.0',
