@@ -64,7 +64,8 @@ router.get('/stream/:type/:id.json', async (req: Request, res: Response): Promis
       const response: StremioStreamResponse = {
         streams: [],
       };
-      return res.json(response);
+      res.json(response);
+      return;
     }
 
     // Get or add the torrent
