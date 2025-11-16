@@ -1,0 +1,62 @@
+{
+  "name": "self-hosted-debrid",
+  "description": "Self-hosted P2P torrent streaming service for Stremio and MediaFusion - a complete Real-Debrid alternative",
+  "repository": "https://github.com/yourusername/self-hosted-debrid",
+  "logo": "https://cdn-icons-png.flaticon.com/512/2504/2504929.png",
+  "keywords": [
+    "debrid",
+    "torrent",
+    "stremio",
+    "mediafusion",
+    "streaming",
+    "p2p",
+    "webtorrent"
+  ],
+  "stack": "heroku-22",
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "env": {
+    "NODE_ENV": {
+      "description": "Node environment (production recommended for Heroku)",
+      "value": "production",
+      "required": true
+    },
+    "BASE_URL": {
+      "description": "Base URL of your deployed app (e.g., https://your-app-name.herokuapp.com) - IMPORTANT: Update this after deployment with your actual Heroku app URL",
+      "value": "https://your-app-name.herokuapp.com",
+      "required": true
+    },
+    "AUTH_TOKEN": {
+      "description": "Optional authentication token for API access. If set, all requests must include this token via Authorization header or ?token= query param. Leave empty to disable authentication.",
+      "required": false
+    },
+    "TORRENT_TIMEOUT": {
+      "description": "Timeout in milliseconds for torrent metadata fetching (default: 300000 = 5 minutes)",
+      "value": "300000",
+      "required": false
+    },
+    "MAX_TORRENTS": {
+      "description": "Maximum number of concurrent torrents to keep in memory (default: 10)",
+      "value": "10",
+      "required": false
+    },
+    "DOWNLOAD_PATH": {
+      "description": "Path for temporary torrent data (default: ./tmp/torrents). Note: Heroku has ephemeral filesystem.",
+      "value": "./tmp/torrents",
+      "required": false
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "addons": [],
+  "scripts": {
+    "postdeploy": "echo 'Deployment successful! Remember to update BASE_URL env var with your actual Heroku app URL.'"
+  }
+}
